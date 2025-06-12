@@ -1,0 +1,172 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>MySQL 简述聚簇索引和非聚簇索引 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    MySQL 简述聚簇索引和非聚簇索引
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-08-09 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/8frmxTkbm/" class="post-tags">
+                            # mysql
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>聚集索引与非聚集索引的区别是：叶节点是否存放一整行记录。<br>
+聚簇索引的叶节点就是数据节点，而非聚簇索引的叶节点仍然是索引节点，并保留一个链接指向对应数据块。<br>
+下图形象的说明了聚簇索引表(InnoDB)和非聚簇索引(MyISAM)的区别：<br>
+<img src="https://liquanhong.github.io//post-images/1596983980295.png" alt="" loading="lazy"><br>
+MyISAM的是非聚簇索引，B+Tree的叶子节点上的data，并不是数据本身，而是数据存放的地址。<br>
+InnoDB使用的是聚簇索引，将主键组织到一棵B+树中，而行数据就储存在叶子节点上。<br>
+<img src="https://liquanhong.github.io//post-images/1596984297551.jpeg" alt="" loading="lazy"><br>
+MySQL InnoDB一定会建立聚簇索引，把实际数据行和相关的键值保存在一块，这也决定了一个表只能有一个聚簇索引</p>
+<ol>
+<li>
+<p>InnoDB通常根据主键值(primary key)进行聚簇</p>
+</li>
+<li>
+<p>如果没有创建主键，则会用一个唯一且不为空的索引列做为主键，成为此表的聚簇索引</p>
+</li>
+<li>
+<p>上面二个条件都不满足，InnoDB会自己创建一个虚拟的聚集索引</p>
+</li>
+</ol>
+<p>聚簇索引的</p>
+<p>优点：就是提高数据访问性能。</p>
+<p>缺点：维护索引很昂贵，特别是插入新行或者主键被更新导至要分页(page split)的时候。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/mysql-shi-wu-ge-chi-ji-bie/" class="post-title gt-a-link">
+                    MySQL事务隔离级别
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

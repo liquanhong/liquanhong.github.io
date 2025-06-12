@@ -1,0 +1,212 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>MySQL事务隔离级别 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    MySQL事务隔离级别
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-07-20 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/8frmxTkbm/" class="post-tags">
+                            # mysql
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>数据库事务（简称:事务）是数据库管理系统执行过程中的一个逻辑单位，由一个有限的数据库操作序列构成。事务的使用是数据库管理系统区别文件系统的重要特征之一。</p>
+<p>事务拥有四个重要的特性：原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability），人们习惯称之为 ACID 特性。下面我逐一对其进行解释。</p>
+<p>事务隔离级别<br>
+SQL 标准定义了四种隔离级别，MySQL 全都支持。这四种隔离级别分别是：</p>
+<ol>
+<li>读未提交（READ UNCOMMITTED）</li>
+<li>读提交 （READ COMMITTED）Oracle 和 SQL Server 的默认隔离级别</li>
+<li>可重复读 （REPEATABLE READ）MySQL 默认的隔离级别</li>
+<li>串行化 （SERIALIZABLE）</li>
+</ol>
+<p>以下总结了各个隔离级别下产生的一些问题</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>隔离级别</strong></th>
+<th style="text-align:left"><strong>脏读</strong></th>
+<th style="text-align:left"><strong>不可重复读</strong></th>
+<th style="text-align:left"><strong>幻读</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">读未提交（Read uncommitted）</td>
+<td style="text-align:left">可以出现</td>
+<td style="text-align:left">可以出现</td>
+<td style="text-align:left">可以出现</td>
+</tr>
+<tr>
+<td style="text-align:left">读提交（Read committed）</td>
+<td style="text-align:left">不允许出现</td>
+<td style="text-align:left">可以出现</td>
+<td style="text-align:left">可以出现</td>
+</tr>
+<tr>
+<td style="text-align:left">可重复读 （Repeatable read）</td>
+<td style="text-align:left">不允许出现</td>
+<td style="text-align:left">不允许出现</td>
+<td style="text-align:left">可以出现</td>
+</tr>
+<tr>
+<td style="text-align:left">序列化（Serializable ）</td>
+<td style="text-align:left">不允许出现</td>
+<td style="text-align:left">不允许出现</td>
+<td style="text-align:left">不允许出现</td>
+</tr>
+</tbody>
+</table>
+<p>以下几个概念是事务隔离级别要实际解决的问题：<br>
+<strong>脏读</strong><br>
+脏读指的是读到了其他事务未提交的数据，未提交意味着这些数据可能会回滚，也就是可能最终不会存到数据库中，也就是不存在的数据。读到了并一定最终存在的数据，这就是脏读。</p>
+<p><strong>可重复读</strong><br>
+可重复读指的是在一个事务内，最开始读到的数据和事务结束前的任意时刻读到的同一批数据都是一致的。通常针对数据**更新（UPDATE）**操作。</p>
+<p><strong>不可重复读</strong><br>
+对比可重复读，不可重复读指的是在同一事务内，不同的时刻读到的同一批数据可能是不一样的，可能会受到其他事务的影响，比如其他事务改了这批数据并提交了。通常针对数据**更新（UPDATE）**操作。</p>
+<p><strong>幻读</strong><br>
+幻读是针对数据**插入（INSERT）**操作来说的。假设事务A对某些行的内容作了更改，但是还未提交，此时事务B插入了与事务A更改前的记录相同的记录行，并且在事务A提交之前先提交了，而这时，在事务A中查询，会发现好像刚刚的更改对于某些数据未起作用，但其实是事务B刚插入进来的，让用户感觉很魔幻，感觉出现了幻觉，这就叫幻读。</p>
+<p>推荐这篇文章说的很详细：</p>
+<ol>
+<li><a href="https://developer.ibm.com/zh/articles/os-mysql-transaction-isolation-levels-and-locks/">https://developer.ibm.com/zh/articles/os-mysql-transaction-isolation-levels-and-locks/</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/117476959">https://zhuanlan.zhihu.com/p/117476959</a></li>
+<li><a href="https://mp.weixin.qq.com/s/W07ZIW0GRtsrS5nuiy2z_A">https://mp.weixin.qq.com/s/W07ZIW0GRtsrS5nuiy2z_A</a></li>
+</ol>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/null-he-bing-yun-suan-fu/" class="post-title gt-a-link">
+                    NULL 合并运算符
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title> Go 语言中`... `的使用 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                     Go 语言中`... `的使用
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2024-02-08 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <h3 id="1-可变参数variadic-parameters">1. 可变参数（Variadic Parameters）</h3>
+<p>在函数声明中，<code>...</code> 可以用来表示函数接受可变数量的参数。这些参数被收集到一个切片中，并可以在函数体内进行处理。</p>
+<p>例如，假设我们有一个函数 <code>sum</code>，它可以计算任意数量的整数之和：</p>
+<pre><code class="language-go">func sum(nums ...int) int {
+    total := 0
+    for _, num := range nums {
+        total += num
+    }
+    return total
+}
+</code></pre>
+<p>在这个函数中，<code>nums ...int</code> 表示 <code>sum</code> 函数接受任意数量的 <code>int</code> 类型参数，并将它们收集到名为 <code>nums</code> 的切片中。</p>
+<p>我们可以这样调用 <code>sum</code> 函数：</p>
+<pre><code class="language-go">fmt.Println(sum(1, 2, 3))  // 输出 6
+fmt.Println(sum(4, 5, 6, 7))  // 输出 22
+</code></pre>
+<h3 id="2-切片的展开slicingspreading">2. 切片的展开（Slicing/Spreading）</h3>
+<p>在某些情况下，我们可能需要将一个切片的元素分别传递给函数，而不是将整个切片传递给函数。这时，<code>...</code> 可以用来展开切片。</p>
+<p>例如，假设我们有一个函数 <code>min</code>，它返回一组整数中的最小值：</p>
+<pre><code>func min(nums ...int) int {
+    if len(nums) == 0 {
+        return 0
+    }
+    min := nums[0]
+    for _, num := range nums {
+        if num &lt; min {
+            min = num
+        }
+    }
+    return min
+}
+</code></pre>
+<p>现在，如果我们有一个整数切片 <code>nums := []int{3, 1, 4, 1, 5}</code>，我们可以使用 <code>...</code> 来展开切片并将其传递给 <code>min</code> 函数：</p>
+<pre><code class="language-go">nums := []int{3, 1, 4, 1, 5}
+fmt.Println(min(nums...))  // 输出 1
+</code></pre>
+<p>在这里，<code>nums...</code> 将切片 <code>nums</code> 展开为一组参数，并将其传递给 <code>min</code> 函数。</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/ji-yu-ke-kao-xiao-xi-de-zui-zhong-yi-zhi-xing/" class="post-title gt-a-link">
+                    基于可靠消息的最终一致性
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

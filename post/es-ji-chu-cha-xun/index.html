@@ -1,0 +1,159 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Elasicsearch基础查询 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Elasicsearch基础查询
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-03-22 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/akl8JZVzv/" class="post-tags">
+                            # elasticsearch
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h4 id=""></h4>
+<p>must：所有语句都必须（must） 匹配，与 AND 等价，影响评分。<br>
+filter：所有语句都必须（filter）匹配，不影响评分。<br>
+should：至少有一个语句要匹配，与 OR 等价，影响评分。<br>
+must_not：所有语句都 不能（must not） 匹配，与 NOT 等价，不影响评分。</p>
+<p>⚠️ 默认情况下，没有 <code>should</code> 语句是必须匹配的，只有一个例外：那就是当没有 <code>must</code> 语句的时候，至少有一个 <code>should</code> 语句必须匹配。但是可以通过 <code>minimum_should_match</code> 参数控制需要匹配的 <code>should</code> 语句的数量，它既可以是一个绝对的数字，又可以是个百分比。</p>
+<p>term：基于词项的查询，对倒排索引的词项精确匹配。<br>
+match：基于全文的查询，既能处理全文字段，又能处理精确字段。主要的应用场景就是进行全文搜索。</p>
+<p>参考：<a href="https://mp.weixin.qq.com/s/GG_zrQlaiP2nfPOxzx_j9w">https://mp.weixin.qq.com/s/GG_zrQlaiP2nfPOxzx_j9w</a></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/explain-zhi-xing-ji-hua-fen-xi/" class="post-title gt-a-link">
+                    explain 执行计划分析
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

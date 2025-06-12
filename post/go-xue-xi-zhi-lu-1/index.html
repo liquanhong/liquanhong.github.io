@@ -1,0 +1,168 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Go 学习之路（一） | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Go 学习之路（一）
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-01-03 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/THC4Ohczy/" class="post-tags">
+                            # go
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>Go</strong>（又称<strong>Golang</strong>）是<a href="https://baike.baidu.com/item/Google">Google</a>开发的一种<a href="https://baike.baidu.com/item/%E9%9D%99%E6%80%81">静态</a><a href="https://baike.baidu.com/item/%E5%BC%BA%E7%B1%BB%E5%9E%8B">强类型</a>、编译型、并发型，并具有垃圾回收功能的<a href="https://baike.baidu.com/item/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a>。</p>
+<p>为了获得最佳的运行性能,GO语言被设计成一门静态编译型的语言，而不是动态解释型语言。</p>
+<p>记录：</p>
+<ol>
+<li>Go 单引号不能用来表示字符串类型。</li>
+<li>变量的命名规则遵循骆驼命名法，即首个单词小写，每个新单词的首字母大写，例如：numShips 和 startDate。但如果你的全局变量希望能够被外部包所使用，则需要将首个单词的首字母也大写。</li>
+<li>函数 fmt.Print 和 fmt.Println 会自动使用格式化标识符 %v 对字符串进行格式化，两者都会在每个参数之间自动增加空格，而后者还会在字符串的最后加上一个换行符。</li>
+<li>Go 没有三目运算符， 即使是基本的条件判断，依然需要使用完整的 if 语句。</li>
+<li>Go 中，数组 是一个具有编号且长度固定的元素序列。</li>
+<li>Go 中，相较于数组，用得更多的是 切片(slice)。slice 和数组是不同的类型，但它们通过 fmt.Println 打印的输出结果是类似的。</li>
+<li>Go 语言中的数组是一种 值类型，切片是一个引用类型。</li>
+<li>map（集合） 是 Go 内建的关联数据类型 （在一些其他的语言中也被称为 哈希(hash) 或者 字典(dict) ）。</li>
+<li>在Go中字符串是不可变的。</li>
+<li>大写字母开头的变量是可导出的，也就是其它包可以读取的，是公有变量；小写字母开头的就是不可导出的，是私有变量。大写字母开头的函数也是一样，相当于class中的带public关键词的公有函数；小写字母开头的就是有private关键词的私有函数。</li>
+<li>类型可以是基本类型，如：int、float、bool、string；结构化的（复合的），如：struct、array、切片 (slice)、map、通道 (channel)；只描述类型的行为的，如：interface。结构化的类型没有真正的值，它使用 nil 作为默认值。</li>
+<li>符号 * 可以放在一个指针前，如 *intP，那么它将得到这个指针指向地址上所存储的值；这被称为反引用（或者内容或者间接引用）操作符；另一种说法是指针转移。对于任何一个变量 var， 如下表达式都是正确的：var == *(&amp;var)。</li>
+<li>假设 s 是一个字符串（本质上是一个字节数组），那么就可以直接通过 c := []byte(s) 来获取一个字节的切片 c 。另外，您还可以通过 copy() 函数来达到相同的目的：copy(dst []byte, src string)。</li>
+</ol>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/kua-yu-zi-yuan-gong-xiang/" class="post-title gt-a-link">
+                    跨域资源共享
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

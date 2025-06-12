@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://liquanhong.github.io/</id>
+    <title>让编码成为一种艺术</title>
+    <updated>2025-06-12T14:02:43.784Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://liquanhong.github.io/"/>
+    <link rel="self" href="https://liquanhong.github.io/atom.xml"/>
+    <subtitle>何以解忧？唯有学习！</subtitle>
+    <logo>https://liquanhong.github.io/images/avatar.png</logo>
+    <icon>https://liquanhong.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2025, 让编码成为一种艺术</rights>
+    <entry>
+        <title type="html"><![CDATA[Dockerfile最佳实践]]></title>
+        <id>https://liquanhong.github.io/post/dockerfile-zui-jia-shi-jian/</id>
+        <link href="https://liquanhong.github.io/post/dockerfile-zui-jia-shi-jian/">
+        </link>
+        <updated>2025-06-08T12:43:03.000Z</updated>
+        <content type="html"><![CDATA[<ol>
+<li>建议所有的Dockerfile指令大写，这样做可以很好地跟在镜像内执行的指令区分开来。</li>
+<li>在选择基础镜像时，尽量选择官方的镜像，并在满足要求的情况下，尽量选择体积小的镜像。目前，Linux镜像大小有以下关系：busybox &lt; debian &lt; centos &lt; ubuntu。最好确保同一个项目中使用一个统一的基础镜像。如无特殊需求，可以选择使用debian:jessie或者alpine。</li>
+<li>在构建镜像时，删除不需要的文件，只安装需要的文件，保持镜像干净、轻量。</li>
+<li>使用更少的层，把相关的内容放到一个层，并使用换行符进行分割。这样可以进一步减小镜像的体积，也方便查看镜像历史。</li>
+<li>不要在Dockerfile中修改文件的权限。因为如果修改文件的权限，Docker在构建时会重新复制一份，这会导致镜像体积越来越大。</li>
+<li>给镜像打上标签，标签可以帮助你理解镜像的功能，例如：docker build -t=&quot;nginx:3.0-onbuild&quot;。</li>
+<li>FROM指令应该包含tag，例如使用FROM debian:jessie，而不是FROM debian。</li>
+<li>充分利用缓存。Docker构建引擎会顺序执行Dockerfile中的指令，而且一旦缓存失效，后续命令将不能使用缓存。为了有效地利用缓存，需要尽量将所有的Dockerfile文件中相同的部分都放在前面，而将不同的部分放在后面。</li>
+<li>优先使用COPY而非ADD指令。和ADD相比，COPY 功能简单，而且也够用。ADD可变的行为会导致该指令的行为不清晰，不利于后期维护和理解。</li>
+<li>推荐将CMD和ENTRYPOINT指令结合使用，使用execl格式的ENTRYPOINT指令设置固定的默认命令和参数，然后使用CMD指令设置可变的参数。</li>
+<li>尽量使用Dockerfile共享镜像。通过共享Dockerfile，可以使开发者明确知道Docker镜像的构建过程，并且可以将Dockerfile文件加入版本控制，跟踪起来。</li>
+<li>使用.dockerignore忽略构建镜像时非必需的文件。忽略无用的文件，可以提高构建速度。</li>
+<li>使用多阶段构建。多阶段构建可以大幅减小最终镜像的体积。</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[垃圾回收的认识]]></title>
+        <id>https://liquanhong.github.io/post/la-ji-hui-shou-de-ren-shi/</id>
+        <link href="https://liquanhong.github.io/post/la-ji-hui-shou-de-ren-shi/">
+        </link>
+        <updated>2025-05-29T06:50:35.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1-什么是-gc有什么作用">1. 什么是 GC，有什么作用？</h2>
+<p><code>GC</code>，全称 <code>Garbage Collection</code>，即垃圾回收，是一种自动内存管理的机制。</p>
+<h2 id="2-常见的-gc-实现方式有哪些go-语言的-gc-使用的是什么">2. 常见的 GC 实现方式有哪些？Go 语言的 GC 使用的是什么？</h2>
+<p>所有的 GC 算法其存在形式可以归结为追踪（Tracing）和引用计数（Reference Counting）这两种形式的混合运用。</p>
+<ul>
+<li>
+<p>追踪式 GC</p>
+<p>从根对象出发，根据对象之间的引用信息，一步步推进直到扫描完毕整个堆并确定需要保留的对象，从而回收所有可回收的对象。Go、 Java、V8 对 JavaScript 的实现等均为追踪式 GC。</p>
+</li>
+<li>
+<p>引用计数式 GC</p>
+<p>每个对象自身包含一个被引用的计数器，当计数器归零时自动得到回收。因为此方法缺陷较多，在追求高性能时通常不被应用。Python、Objective-C 、Php等均为引用计数式 GC。</p>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[一致性 Hash 算法原理总结]]></title>
+        <id>https://liquanhong.github.io/post/yi-zhi-xing-hash-suan-fa-yuan-li-zong-jie/</id>
+        <link href="https://liquanhong.github.io/post/yi-zhi-xing-hash-suan-fa-yuan-li-zong-jie/">
+        </link>
+        <updated>2025-05-28T14:28:56.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="一致性哈希的核心思想">一致性哈希的核心思想</h4>
+<ol>
+<li><strong>环状结构：</strong> 使用哈希环作为抽象的映射空间。</li>
+<li><strong>双重哈希：</strong> 节点和数据都通过同一个哈希函数映射到环上。</li>
+<li><strong>顺时针定位：</strong> 数据归属由其环上位置顺时针遇到的第一个节点决定。</li>
+<li><strong>变动局部化：</strong> 节点增减只影响环上相邻节点负责的数据，迁移量最小化（O(k/n)，其中 k 是节点变动数，n 是总节点数）。</li>
+<li><strong>虚拟节点：</strong> 解决基本算法可能带来的负载不均问题，是实现高可用负载均衡的关键。</li>
+</ol>
+<p><a href="https://mp.weixin.qq.com/s/WTz1KA9kOGrqFVTtALJzjQ">链接</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[GO指针]]></title>
+        <id>https://liquanhong.github.io/post/go-zhi-zhen/</id>
+        <link href="https://liquanhong.github.io/post/go-zhi-zhen/">
+        </link>
+        <updated>2025-05-27T01:33:42.000Z</updated>
+        <content type="html"><![CDATA[<p><a href="https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/04.9.md">链接</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[go命令]]></title>
+        <id>https://liquanhong.github.io/post/go-ming-ling/</id>
+        <link href="https://liquanhong.github.io/post/go-ming-ling/">
+        </link>
+        <updated>2025-03-02T07:17:02.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="一go-mod-xxx">一，<strong>go mod xxx</strong></h4>
+<ul>
+<li>
+<h5 id="go-mod-tidy"><strong>go mod tidy</strong></h5>
+</li>
+</ul>
+<p>​		该命令确保go.mod与模块中的源代码一致。它添加构建当前模块的包和依赖所必须的任何缺少的模块，删除不提供任何有价值的包的未使用的模块。它也会添加任何缺少的条目至go.mod并删除任何不需要的条目。</p>
+<p>小技巧：使用 go build、go run、go test 这些 Go 语言工具链提供的命令时，添加 -race 标识可以帮你检查 Go 语言代码是否存在资源竞争。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[COLA应用架构]]></title>
+        <id>https://liquanhong.github.io/post/cola-ying-yong-jia-gou/</id>
+        <link href="https://liquanhong.github.io/post/cola-ying-yong-jia-gou/">
+        </link>
+        <updated>2025-03-02T07:13:48.000Z</updated>
+        <content type="html"><![CDATA[<p>1，方法名约定</p>
+<table>
+<thead>
+<tr>
+<th>CRUD操作</th>
+<th>方法名约定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新增</td>
+<td>create</td>
+</tr>
+<tr>
+<td>添加</td>
+<td>add</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>remove（App和Domain层），delete（Infrastructure层）</td>
+</tr>
+<tr>
+<td>修改</td>
+<td>update</td>
+</tr>
+<tr>
+<td>查询（返回单个结果）</td>
+<td>get</td>
+</tr>
+<tr>
+<td>查询（返回多个结果）</td>
+<td>list</td>
+</tr>
+<tr>
+<td>分页查询</td>
+<td>page</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>count</td>
+</tr>
+</tbody>
+</table>
+<p>业务命名最好不用直接用CRUD，除非其行为有非常强的CRUD语义，比如用addContact表示添加联系人，removeContact表示删除联系人是可以接受的。但是如果你用createOrder和deleteOrder来表示下单和取消订单是不合适的，在业务层，更贴切的命名应该是placeOrder和cancelOrder。</p>
+<p>当然在Infrastructure层，比如OrderDAO，你还是应该采用CRUD的命名方式，用createOrder和deleteOrder来表示对订单数据的创建和删除。</p>
+<p>Tips：在业务层，尽量避免CRUD，努力找到更好的业务词汇来表达业务语义，如果非用不可，请使用约定好的CRUD命名。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[临时表创建及关联]]></title>
+        <id>https://liquanhong.github.io/post/lin-shi-biao-chuang-jian-ji-guan-lian/</id>
+        <link href="https://liquanhong.github.io/post/lin-shi-biao-chuang-jian-ji-guan-lian/">
+        </link>
+        <updated>2025-02-26T02:22:05.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-mysql"># 把1，2，3当作某个字段查询作为临时表
+SELECT
+	'1' AS val UNION ALL
+SELECT
+	'2' UNION ALL
+SELECT
+	'3'
+
+# 临时表关联
+SELECT
+	temp_values.val
+CASE
+		WHEN a.value IS NOT NULL THEN
+		'有' ELSE '没有' 
+	END AS 是否存在 
+FROM
+	(SELECT '1' AS val UNION ALL SELECT '2' UNION ALL SELECT '3') AS temp_values
+	LEFT JOIN a ON a.value = temp_values.val
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[python学习笔记]]></title>
+        <id>https://liquanhong.github.io/post/python-xue-xi-bi-ji/</id>
+        <link href="https://liquanhong.github.io/post/python-xue-xi-bi-ji/">
+        </link>
+        <updated>2025-01-07T01:50:27.000Z</updated>
+        <content type="html"><![CDATA[<p>1，字符串是不可变的；<br>
+2，列表是可变的；<br>
+3，python 中的简单赋值绝不会复制数据；<br>
+4，形参为 * *name 形式时，接收一个字典；<br>
+5，<code>*args</code> 形参后的任何形式参数只能是仅限关键字参数，即只能用作关键字参数，不能用作位置参数；<br>
+6，用 <code>*</code> 操作符把实参从列表或元组解包出来；<br>
+7，<strong>列表是动态的</strong>，长度大小不固定，可以随意地增加、删减或者改变元素（mutable）；<br>
+8，<strong>元组是静态的</strong>，长度大小固定，无法增加删减或者改变（immutable）；<br>
+9，字典（dict）和集合（set），集合是无序的；<br>
+10，比较操作符<code>'=='</code>表示比较对象间的值是否相等，而<code>'is'</code>表示比较对象的标识是否相等，即它们是否指向同一个内存地址；<br>
+11，比较操作符<code>'is'</code>效率优于<code>'=='</code>，因为<code>'is'</code>操作符无法被重载，执行<code>'is'</code>操作只是简单的获取对象的ID，并进行比较；而<code>'=='</code>操作符则会递归地遍历对象的所有值，并逐一比较；<br>
+12，浅拷贝中的元素，是原对象中子对象的引用，因此，如果原对象中的元素是可变的，改变其也会影响拷贝后的对象，存在一定的副作用；<br>
+13，变量的赋值，只是表示让变量指向了某个对象，并不表示拷贝对象给变量；而一个对象，可以被多个变量所指向；<br>
+14，可变对象（列表，字典，集合等等）的改变，会影响所有指向该对象的变量；<br>
+15，对于不可变对象（字符串、整型、元组等等），所有指向该对象的变量的值总是一样的，也不会改变。但是通过某些操作（+=等等）更新不可变对象的值时，会返回一个新的对象；<br>
+16，变量可以被删除，但是对象无法被删除；<br>
+17，列表（list: [0, 1, 2]），元组（tuple: (0, 1, 2)），字典（dict: {0:0, 1:1, 2:2}），集合（set: set([0, 1, 2])）；</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ Go 语言中`... `的使用]]></title>
+        <id>https://liquanhong.github.io/post/go-yu-yan-zhong-de-shi-yong/</id>
+        <link href="https://liquanhong.github.io/post/go-yu-yan-zhong-de-shi-yong/">
+        </link>
+        <updated>2024-02-08T07:25:20.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="1-可变参数variadic-parameters">1. 可变参数（Variadic Parameters）</h3>
+<p>在函数声明中，<code>...</code> 可以用来表示函数接受可变数量的参数。这些参数被收集到一个切片中，并可以在函数体内进行处理。</p>
+<p>例如，假设我们有一个函数 <code>sum</code>，它可以计算任意数量的整数之和：</p>
+<pre><code class="language-go">func sum(nums ...int) int {
+    total := 0
+    for _, num := range nums {
+        total += num
+    }
+    return total
+}
+</code></pre>
+<p>在这个函数中，<code>nums ...int</code> 表示 <code>sum</code> 函数接受任意数量的 <code>int</code> 类型参数，并将它们收集到名为 <code>nums</code> 的切片中。</p>
+<p>我们可以这样调用 <code>sum</code> 函数：</p>
+<pre><code class="language-go">fmt.Println(sum(1, 2, 3))  // 输出 6
+fmt.Println(sum(4, 5, 6, 7))  // 输出 22
+</code></pre>
+<h3 id="2-切片的展开slicingspreading">2. 切片的展开（Slicing/Spreading）</h3>
+<p>在某些情况下，我们可能需要将一个切片的元素分别传递给函数，而不是将整个切片传递给函数。这时，<code>...</code> 可以用来展开切片。</p>
+<p>例如，假设我们有一个函数 <code>min</code>，它返回一组整数中的最小值：</p>
+<pre><code>func min(nums ...int) int {
+    if len(nums) == 0 {
+        return 0
+    }
+    min := nums[0]
+    for _, num := range nums {
+        if num &lt; min {
+            min = num
+        }
+    }
+    return min
+}
+</code></pre>
+<p>现在，如果我们有一个整数切片 <code>nums := []int{3, 1, 4, 1, 5}</code>，我们可以使用 <code>...</code> 来展开切片并将其传递给 <code>min</code> 函数：</p>
+<pre><code class="language-go">nums := []int{3, 1, 4, 1, 5}
+fmt.Println(min(nums...))  // 输出 1
+</code></pre>
+<p>在这里，<code>nums...</code> 将切片 <code>nums</code> 展开为一组参数，并将其传递给 <code>min</code> 函数。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[基于可靠消息的最终一致性]]></title>
+        <id>https://liquanhong.github.io/post/ji-yu-ke-kao-xiao-xi-de-zui-zhong-yi-zhi-xing/</id>
+        <link href="https://liquanhong.github.io/post/ji-yu-ke-kao-xiao-xi-de-zui-zhong-yi-zhi-xing/">
+        </link>
+        <updated>2024-01-28T09:11:39.000Z</updated>
+        <content type="html"><![CDATA[<p>​  RocketMQ事务消息设计则主要是为了解决Producer端的消息发送与本地事务执行的原子性问题，RocketMQ的设计中broker与producer端的双向通信能力，使得broker天生可以作为一个事务协调者存在；而RocketMQ本身提供的存储机制为事务消息提供了持久化能力；RocketMQ的高可用机制以及可靠消息设计则为事务消息在系统发生异常时依然能够保证达成事务的最终一致性。<br>
+在RocketMQ 4.3后实现了完整的事务消息，实际上其实是对本地消息表的一个封装，将本地消息表移动到了MQ内部，解决Producer端的消息发送与本地事务执行的原子性问题。<br>
+<img src="https://liquanhong.github.io//post-images/1706433206485.png" alt="" loading="lazy"><br>
+执行流程如下 ：<br>
+为方便理解我们还以注册送积分的例子来描述整个流程。<br>
+Producer即MQ发送方，本例中是用户服务，负责新增用户。MQ订阅方即消息消费方，本例中是积分服务，负责新增积分。<br>
+1、Producer发送事务消息<br>
+Producer（MQ发送方）发送事务消息至MQ Server，MQ Server将消息状态标记为Prepared（预览状态），注意此时这条消息消费者（MQ订阅方）是无法消费到的。<br>
+2、MQ Server回应消息发送成功<br>
+MQ Server接收到Producer发送给的消息则回应发送成功表示MQ已接收到消息。<br>
+3、Producer执行本地事务<br>
+Producer端执行业务代码逻辑，通过本地数据库事务控制。<br>
+本例中，Producer执行添加用户操作。<br>
+4、消息投递<br>
+若Producer本地事务执行成功则自动向MQ Server发送commit消息，MQ Server接收到commit消息后将“增加积分消息”状态标记为可消费，此时MQ订阅方（积分服务）即正常消费消息；<br>
+若Producer 本地事务执行失败则自动向MQ Server发送rollback消息，MQ Server接收到rollback消息后将删除“增加积分消息”。<br>
+MQ订阅方（积分服务）消费消息，消费成功则向MQ回应ack，否则将重复接收消息。这里ack默认自动回应，即程序执行正常则自动回应ack。<br>
+5、事务回查<br>
+如果执行Producer端本地事务过程中，执行端挂掉，或者超时，MQ Server将会不停的询问同组的其他Producer来获取事务执行状态，这个过程叫事务回查。MQ Server会根据事务回查结果来决定是否投递消息。<br>
+以上主干流程已由RocketMQ实现，对用户则来说，用户需要分别实现本地事务执行以及本地事务回查方法，因此只需关注本地事务的执行状态即可。<br>
+<img src="https://liquanhong.github.io//post-images/1747841854583.jpg" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+</feed>

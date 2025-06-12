@@ -1,0 +1,224 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>PHP中RSA非对称加密实现 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    PHP中RSA非对称加密实现
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-08-29 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/yYaEJZeBZ/" class="post-tags">
+                            # php
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>1，php中RSA实现（公钥加密私钥解密）</p>
+<pre><code class="language-php">/**
+* 公钥加密数据.
+* @param string $decrypted 数据明文
+* @return null|string null加密失败
+*/
+public function encryptTxtContent(string $decrypted): ?string
+{
+    $pubKey = openssl_get_publicKey($this-&gt;getPubKeyPem($this-&gt;txtPubKey));
+    return openssl_public_encrypt($decrypted, $encrypted, $pubKey) ? base64_encode($encrypted) : null;
+}
+
+/**
+* 私钥解密
+* @param string $encrypted 数据密文
+* @return mixed
+*/
+public function decryptTxtContent(string $encrypted): ?string
+{
+    $privateKey = openssl_get_privatekey($this-&gt;getPriKeyPem($this-&gt;txtPriKey));
+    return openssl_private_decrypt(base64_decode($encrypted), $decrypted, $privateKey) ? $decrypted : null;
+}
+</code></pre>
+<p>在开发过程中，我就用了上边的加解密方式，但是在实践过程中由于加密字符串过长导致加密失败；获取一下错误信息：<code>error:0909006C:PEM routines:get_name:no start line</code>；搜索了一下官方也有对应的解决方案，<br>
+https://www.php.net/manual/zh/function.openssl-public-encrypt.php#56449 。</p>
+<h6 id="加密出现错误的原因">加密出现错误的原因：</h6>
+<p>RSA对明文长度和密文长度有限制，如果要加密的明文太长则会出错。RSA 1024bit 加密明文最大长度117字节，解密要求密文最大长度为128字节，所以在加密和解密的过程中需要分块进行。</p>
+<h6 id="注意事项">注意事项：</h6>
+<p>RSA不同的密钥长度，在分段加、解密时，分段字节数是不同的，若RSA密钥长度为M bit，分段加密字节数为(M/8-11)，分段解密字节数为（M/8）。<br>
+如：<br>
+1024bit：分段加密字节数为117，分段解密字节数为128。<br>
+2048bit：分段加密字节数为245，分段解密字节数为256。</p>
+<p>我用的是2048bit加密明文的所有代码如下：</p>
+<pre><code class="language-php">/**
+* 公钥加密数据.
+* @param string $decrypted 数据明文
+* @return null|string null加密失败
+*/
+public function encryptTxtContent(string $decrypted): ?string
+{
+		$publicKey = openssl_get_publicKey($pubKey);
+    $crypted = array_reduce(str_split($decrypted, 245), function ($carry, $item) use ($publicKey) {
+        $subCrypted = null;
+        openssl_public_encrypt($item, $subCrypted, $publicKey);
+        $subCrypted &amp;&amp; $carry .= $subCrypted;
+        return $carry;
+    }, '');
+    if (empty($crypted)) {
+    		return '';
+    }
+    return base64_encode($crypted);
+}
+
+/**
+* 私钥解密
+* @param string $encrypted 数据密文
+* @return mixed
+*/
+public function decryptTxtContent(string $encrypted): ?array
+{
+    $privateKey = openssl_get_privatekey($this-&gt;getPriKeyPem($this-&gt;txtPriKey));
+    $dataArr   = str_split(base64_decode($encrypted), 256);
+    $decrypted = array_reduce($dataArr, function ($carry, $item) use ($privateKey) {
+        $subDecrypted = null;
+        openssl_private_decrypt($item, $subDecrypted, $privateKey);
+        $subDecrypted &amp;&amp; $carry .= $subDecrypted;
+        return $carry;
+    }, '');
+    if (! $decrypted) {
+    		return [];
+    }
+    return json_decode($decrypted, true, 512, JSON_THROW_ON_ERROR);
+}
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/go-yu-yan-bian-ma-gui-fan/" class="post-title gt-a-link">
+                    go语言编码规范
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

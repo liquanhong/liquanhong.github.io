@@ -1,0 +1,168 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>DDD学习记录 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    DDD学习记录
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2023-02-19 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/-wupUAgaWp/" class="post-tags">
+                            # DDD
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <ol>
+<li>DDD 是一个的软件设计方法论；DDD 的核心理念：将“真实物理世界”同构化映射为“虚拟代码世界”；</li>
+<li>Service 层实现类代码的逻辑写的很长，且完全是“平铺直述”的。这种代码，说白了就是“CRUD+计算逻辑”组合的代码；这种代码，我们就叫做”事务脚本式”代码，或者说叫“贫血模型”代码。
+<ul>
+<li>”事务脚本式”代码，简单来说，事务脚本就是采用过程式的编程方式，业务逻辑根据流程一次组装在方法中，每个方法是一个业务的执行体，类似于某个业务的执行脚本，所以叫事务脚本；</li>
+<li>“贫血模型”代码，是因为 entity 层的那些 POJO 对象如 Order 等，没有任何业务行为的封装（比如：Order 类应该自己生成自己的订单号、提货号等），只有属性而没有行为的对象，就是“贫血”对象，基于“贫血”对象实现的业务逻辑代码，就叫“贫血模型”代码。</li>
+<li><strong>学习延伸</strong>：“充血模型”代码，充血模型是相对贫血模型来说的，充血模型认为一个模型不仅应该有其必备的属性、也应该有其所具备的行为。例如一个Person模型，除了具备Person必备的name,age等属性外，也应该有changeAddress(Address address) 等自己的行为方法，这样Person才是一个完整的个体。</li>
+</ul>
+</li>
+<li>DDD 战略设计，就是识别出有哪些限界上下文、以及清晰的定义限界上下文的关系和边界。
+<ol>
+<li><strong>限界上下文</strong>就是目标系统内部<strong>最粗粒度</strong>的模块划分，这个粒度的模块划分往往是后续“微服务”怎么切分的主要依据。</li>
+<li><strong>限界上下文映射</strong>就是搞清楚这些“限界上下文”模块之间是怎样的协作关系（调用关系、事件通知关系等等）。</li>
+</ol>
+</li>
+<li>DDD 战术设计，核心就是完成“领域”层内的“聚合”、“领域服务”的设计，也就是“核心业务逻辑”的设计。</li>
+</ol>
+<p>推荐阅读：<a href="https://www.infoq.cn/u/beautautumn/publish">DDD 实战</a></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/php-zhong-rsa-fei-dui-cheng-jia-mi-shi-xian/" class="post-title gt-a-link">
+                    PHP中RSA非对称加密实现
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

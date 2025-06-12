@@ -1,0 +1,262 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Canal安装及配置使用 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Canal安装及配置使用
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-02-23 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/Ocx30nPE2/" class="post-tags">
+                            # canal
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <ol>
+<li>
+<p>MySQL 需要先开启 Binlog 写入功能，配置 binlog-format 为 ROW 模式，/etc/my.cnf 中配置如下</p>
+<pre><code class="language-nginx">[mysqld]
+log-bin=mysql-bin # 开启 binlog
+binlog-format=ROW # 选择 ROW 模式
+server_id=1 # 配置 MySQL replaction 需要定义，不要和 canal 的 slaveId 重复
+</code></pre>
+<p>数据库重启后, 简单测试 <code>my.cnf</code> 配置是否生效:</p>
+<pre><code class="language-mysql">mysql&gt; show variables like 'binlog_format';
+mysql&gt; show variables like 'log_bin';
+</code></pre>
+</li>
+<li>
+<p>授权 canal 链接 MySQL 账号具有作为 MySQL slave 的权限, 如果已有账户可直接 grant</p>
+<pre><code class="language-mysql">CREATE USER canal IDENTIFIED BY 'canal';  
+GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
+-- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
+FLUSH PRIVILEGES;
+</code></pre>
+</li>
+<li>
+<p>下载压缩包</p>
+<p>​	到canal官网地址(<a href="https://github.com/alibaba/canal/releases">release</a>)下载最新压缩包,请下载 canal.deployer-<code>latest</code>.tar.gz</p>
+</li>
+<li>
+<p>将canal.deployer 复制到固定目录并解压</p>
+<pre><code class="language-nginx">mkdir -p /usr/local/canal
+mv canal.deployer-1.1.5.tar.gz /usr/local/canal/
+tar -zxvf canal.deployer-1.1.5.tar.gz
+</code></pre>
+</li>
+<li>
+<p>配置修改参数（具体配置说明：<a href="https://github.com/alibaba/canal/wiki/Canal-Kafka-RocketMQ-QuickStart">https://github.com/alibaba/canal/wiki/Canal-Kafka-RocketMQ-QuickStart</a>）</p>
+<p>a. 修改instance 配置文件sudo vim conf/example/instance.properties</p>
+<pre><code class="language-nginx">#  按需修改成自己的数据库信息
+#################################################
+...
+canal.instance.master.address=127.0.0.1:3306
+# username/password,数据库的用户名和密码
+...
+canal.instance.dbUsername = canal
+canal.instance.dbPassword = canal
+...
+# table regex
+canal.instance.filter.regex=distribution\\.dis_course,distribution\\.dis_group_buy
+# table black regex
+canal.instance.filter.black.regex=
+# table field filter(format: schema1.tableName1:field1/field2,schema2.tableName2:field1/field2)
+canal.instance.filter.field=distribution\\.dis_course:title/status/group_status/is_show/is_visible/course_status
+# mq config
+canal.mq.topic=xd_test
+# 针对库名或者表名发送动态topic
+canal.mq.dynamicTopic=xd_course_canal:distribution\\.dis_course,xd_group_canal:distribution\\.dis_group_buy
+canal.mq.partition=0
+# hash partition config
+#canal.mq.partitionsNum=3
+#库名.表名: 唯一主键，多个表之间用逗号分隔
+#canal.mq.partitionHash=mytest.person:id,mytest.role:id
+#################################################
+</code></pre>
+<p>b. 修改canal 配置文件sudo vim /usr/local/canal/conf/canal.properties</p>
+<pre><code class="language-nginx"># ...
+# 可选项: tcp(默认), kafka, RocketMQ
+canal.serverMode = kafka
+# 是否为flat json格式对象
+canal.mq.flatMessage = true
+# Canal的batch size, 默认50K, 由于kafka最大消息体限制请勿超过1M(900K以下)
+canal.mq.canalBatchSize = 50
+# Canal get数据的超时时间, 单位: 毫秒, 空为不限超时
+canal.mq.canalGetTimeout = 100
+# ...
+# kafka 集群配置: 192.168.1.117:9092,192.168.1.118:9092,192.168.1.119:9092 
+kafka.bootstrap.servers = 192.168.1.117:9092,192.168.1.118:9092,192.168.1.119:9092
+kafka.acks = all
+kafka.compression.type = none
+# flagMessage模式下可以调大该值, 但不要超过MQ消息体大小上限
+kafka.batch.size = 16384
+kafka.max.request.size = 1048576
+# flatMessage模式下请将该值改大, 建议50-200
+kafka.linger.ms = 200
+kafka.buffer.memory = 33554432
+# 发送失败重试次数
+kafka.retries = 0
+</code></pre>
+</li>
+<li>
+<p>启动/日志查看/关闭</p>
+<p>a. 启动</p>
+<pre><code class="language-nginx">cd /usr/local/canal/
+sudo sh bin/startup.sh
+</code></pre>
+<p>b. 查看日志</p>
+<pre><code class="language-nginx">vi logs/canal/canal.log
+vi logs/example/example.log
+</code></pre>
+<p>c. 关闭</p>
+<pre><code class="language-nginx">cd /usr/local/canal/
+sudo sh bin/stop.sh
+</code></pre>
+</li>
+<li>
+<p>Canal MQ Performance（性能测试文档）</p>
+<p>如果遇到性能问题，可以查看对应的做一些调整。</p>
+<p><a href="https://github.com/alibaba/canal/wiki/Canal-MQ-Performance">https://github.com/alibaba/canal/wiki/Canal-MQ-Performance</a></p>
+</li>
+<li>
+<p>常见问题解答</p>
+<p>安装或者运行过程中遇到问题，可查阅：</p>
+<p>&lt;https://github.com/alibaba/canal/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94</p>
+</li>
+</ol>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/php-mian-shi-ji-he-jing-xuan/" class="post-title gt-a-link">
+                    PHP面试集合精选
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

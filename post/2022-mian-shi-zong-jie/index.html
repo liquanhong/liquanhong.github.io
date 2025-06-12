@@ -1,0 +1,260 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>2022面试总结 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    2022面试总结
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-05-07 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <p>💡  根据 <a href="https://baike.baidu.com/item/%E9%81%97%E5%BF%98%E6%9B%B2%E7%BA%BF/7278665?fr=aladdin">遗忘曲线</a>：如果没有记录和回顾，6天后便会忘记75%的内容，读书笔记正是帮助你记录和回顾的工具，不必拘泥于形式，其核心是：记录、翻看、思考</p>
+<h4 id="日常工作怎么优化sql">日常工作怎么优化sql?</h4>
+<ol>
+<li>查询必要的列；</li>
+<li>尽量使用覆盖索引；</li>
+<li>explain查询分析调整sql语句，添加索引；</li>
+<li>主从架构，提升读性能；</li>
+<li>分库分表；</li>
+<li>在高并发情况下的查询操作，可以使用缓存（如 Redis）代替数据库操作，提高并发性能；</li>
+<li>表字段比较复杂、易变动、结构难以统一的情况下，可以考虑使用 Nosql 来代替关系数据库表存储，如 ElasticSearch、MongoDB；</li>
+</ol>
+<h4 id="redis常用的数据类型有哪些">redis常用的数据类型有哪些？</h4>
+<p>字符串（strings），散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） ，范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询；</p>
+<ul>
+<li>字符串使用场景：缓存数据、计数器、共享session；</li>
+<li>哈希 hash使用场景：对象存储；</li>
+<li>列表使用场景：消息队列、热销榜；</li>
+<li>集合使用场景：标签、社交相关；</li>
+<li>有序集合使用场景：排行榜、延迟队列；</li>
+</ul>
+<p>各数据的使用场景可参考：https://mp.weixin.qq.com/s/-3fcK4WspGk6SEsaVrdx8A</p>
+<h4 id="redis持久化有几种方式">redis持久化有几种方式？</h4>
+<p>Redis 支持 RDB 和 AOF 两种持久化机制，持久化功能有效地避免因进程 退出造成的数据丢失问题，当下次重启时利用之前持久化的文件即可实现数据恢复。</p>
+<ul>
+<li>RDB 是一次全量备份，AOF 日志是连续的增量备份， RDB 是内存数据的二进制序列化形式，在存储上非常紧凑，而 AOF 日志记录的是内存数据修改的指令记录文本。</li>
+<li>AOF 以独立日志的方式记录每次写命令， 重启时再重新执行 AOF 文件中的命令达到恢复数据的目的。AOF 的主要作用 是解决了数据持久化的实时性，目前已经是 Redis 持久化的主流方式。</li>
+</ul>
+<p>AOF 日志在长期的运行过程中会变的无比庞大，数据库重启时需要加载 AOF 日志进行指令重放，这个时间就会无比漫长。所以需要定期进行 AOF 重写，给 AOF 日志进行瘦身。</p>
+<h4 id="常见的限流算法">常见的限流算法：</h4>
+<ol>
+<li>固定窗口（计数器算法）；</li>
+<li>滑动窗口；</li>
+<li>漏桶算法；</li>
+<li>令牌桶算法；</li>
+</ol>
+<h4 id="php垃圾回收机制">PHP垃圾回收机制：</h4>
+<p>https://www.php.net/manual/zh/features.gc.php</p>
+<ul>
+<li>变量容器在”refcount“变成0时就被销毁. 当任何关联到某个变量容器的变量离开它的作用域(比如：函数执行结束)，或者对变量调用了函数 unset()时，”refcount“就会减1。</li>
+<li>由于数组元素“1”仍然指向数组本身，所以这个容器不能被清除 。因为没有另外的符号指向它，用户没有办法清除这个结构，结果就会导致内存泄漏。庆幸的是，php将在脚本执行结束时清除这个数据结构，但是在php清除之前，将耗费不少内存。</li>
+</ul>
+<h4 id="innodb和myisam的区别">InnoDB和MyISAM的区别：</h4>
+<ol>
+<li>InnoDB支持事务，MyISAM不支持；</li>
+<li>InnoDB支持外键，MyISAM不支持；</li>
+<li>InnoDB支持表锁、行锁，MyISAM只支持表锁；</li>
+<li>InnoDB是聚集索引，MyISAM是非聚集索引。</li>
+</ol>
+<h4 id="mysql如何处理死锁">Mysql如何处理死锁？</h4>
+<p>当并发系统中不同线程出现循环资源依赖，涉及的线程都在等待别的线程释放资源时，就会导致这几个线程都进入无限等待的状态，称为死锁。</p>
+<ul>
+<li>等待超时，可以通过参数innodb_lock_wait_timeout来设置；</li>
+<li>开启死锁检测，通过innodb_deadlock_detect=on 进行设置，那么当InnoDB 发现有死锁发生时，直接回滚其中一个事务。</li>
+</ul>
+<p>如何避免死锁：降低并发、拆分逻辑。</p>
+<h4 id="btree和hash区别">B+tree和hash区别：</h4>
+<h4 id="httpsmpweixinqqcomsqhjitjpvdikfcdl9srl97q">https://mp.weixin.qq.com/s/qHJiTjpvDikFcdl9SRL97Q</h4>
+<h4 id="mysql-有哪些日志及作用描述">Mysql 有哪些日志及作用描述：</h4>
+<ul>
+<li>undo log（回滚日志），InnoDB引擎特有的日志，保证了事务的原子性；</li>
+<li>redo log（重做日志），InnoDB引擎特有的日志，保证了事务的持久性；</li>
+<li>binlog（归档日志），MySQL的Server层实现的，所有引擎都可以使用；</li>
+</ul>
+<h4 id="mysql分库分表">Mysql分库分表：</h4>
+<h4 id="常见的http状态码">常见的http状态码：</h4>
+<p>[https://www.zhihu.com/search?type=content&amp;q=HTTP%20%E7%8A%B6%E6%80%81%E7%A0%81](https://www.zhihu.com/search?type=content&amp;q=HTTP 状态码)</p>
+<table>
+<thead>
+<tr>
+<th>301</th>
+<th>Moved Permanently</th>
+<th>永久性重定向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>302</td>
+<td>Found</td>
+<td>临时性重定向</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+<td>资源未修改</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>禁止访问</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>找不到资源</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed</td>
+<td>请求方法不允许</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Bad Gateway</td>
+<td>从远程服务器接收到了一个无效的响应</td>
+</tr>
+<tr>
+<td>504</td>
+<td>Gateway Timeout</td>
+<td>响应超时</td>
+</tr>
+</tbody>
+</table>
+<h4 id="trait的理解">trait的理解：</h4>
+<p>为了减少单继承语言的限制，实现代码复用；</p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/ab-ya-ce-ming-ling/" class="post-title gt-a-link">
+                    ab压测命令
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>mysql JSON查询方法 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    mysql JSON查询方法
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2023-05-31 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/8frmxTkbm/" class="post-tags">
+                            # mysql
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h3 id="1基础的json提取">1，基础的JSON提取</h3>
+<p>使用 -&gt; 或 -&gt;&gt; 操作符</p>
+<ul>
+<li>-&gt; 操作符用于提取 JSON 对象中的值，返回的是 JSON 类型。</li>
+<li>-&gt;&gt; 操作符用于提取 JSON 对象中的值，并将其作为字符串返回。</li>
+</ul>
+<p>JSON_UNQUOTE() 用于去除 JSON 字符串的引号，使其转换为普通字符串；<br>
+JSON_EXTRACT() 用于从 JSON 文档中提取数据，功能与 -&gt; 操作符类似；<br>
+JSON_CONTAINS() 用于检查 JSON 数据中是否包含指定的值，（只能匹配完整值，不能用于部分匹配）；</p>
+<p>（1）假设JSON字符串：</p>
+<pre><code class="language-json">{&quot;name&quot;: &quot;John&quot;, &quot;age&quot;: 30, &quot;city&quot;: &quot;New York&quot;}
+</code></pre>
+<p>查询方法:</p>
+<pre><code class="language-mysql">select json-&gt;&gt;'$.name'
+select JSON_UNQUOTE(JSON_EXTRACT(json,'$.name'))
+</code></pre>
+<p>（2）假设JSON字符串：</p>
+<pre><code class="language-json">[{&quot;name&quot;: &quot;John&quot;, &quot;age&quot;: 30, &quot;city&quot;: &quot;New York&quot;}]
+</code></pre>
+<p>方法:</p>
+<pre><code class="language-mysql">select json-&gt;&gt;'$[0].name'
+select JSON_UNQUOTE(JSON_EXTRACT(json,'$[0].name'))
+</code></pre>
+<p>（3）假设JSON字符串：</p>
+<pre><code class="language-json">[&quot;info&quot;: {&quot;name&quot;: &quot;John&quot;, &quot;age&quot;: 30, &quot;city&quot;: &quot;New York&quot;}]
+</code></pre>
+<p>方法:</p>
+<pre><code class="language-mysql">select json-&gt;&gt;'$.info[0].name'
+select JSON_UNQUOTE(JSON_EXTRACT(json,'$info[0].name'))
+</code></pre>
+<p>（4）假设JSON字符串：</p>
+<pre><code class="language-json">[]
+</code></pre>
+<p>方法:</p>
+<pre><code class="language-mysql">select json-&gt;&gt;'$[0]' IS NULL
+select JSON_UNQUOTE(JSON_EXTRACT(json,'$[0]')) IS NULL
+</code></pre>
+<p>（5）假设JSON字符串：</p>
+<pre><code class="language-json">{&quot;name&quot;: &quot;Charlie&quot;, &quot;details&quot;: {&quot;age&quot;: 35, &quot;department&quot;: &quot;HR&quot;}}
+</code></pre>
+<p>方法:</p>
+<pre><code class="language-mysql">select json-&gt;&gt;'$.details.department' = 'HR'
+</code></pre>
+<p>（6）假设JSON字符串：</p>
+<pre><code class="language-json">{&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;skills&quot;: [&quot;Java&quot;, &quot;Python&quot;]}
+</code></pre>
+<p>方法:</p>
+<pre><code class="language-mysql">-- 查询具备 Java 技能的员工
+SELECT JSON_CONTAINS(info-&gt;'$.skills', '&quot;Java&quot;')
+-- 查询 skills 数组中以 J 开头的技能
+SELECT JSON_SEARCH(info-&gt;'$.skills', 'all', 'J%')
+-- 查询所有以字母 A 开头的员工姓名
+SELECT JSON_EXTRACT(info, '$.name') REGEXP '^A'
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/da-wen-jian-shang-chuan-shi-jian-chang-de-jie-jue-fang-an/" class="post-title gt-a-link">
+                    大文件上传时间长的解决方案
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

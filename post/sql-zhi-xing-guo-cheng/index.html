@@ -1,0 +1,177 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>sql 执行过程 | 让编码成为一种艺术</title>
+
+<link rel="shortcut icon" href="https://liquanhong.github.io//favicon.ico?v=1749736960015">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://liquanhong.github.io//styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <a href="/">
+            <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        </a>
+        <div class="site-name gt-c-content-color-first">
+            让编码成为一种艺术
+        </div>
+    </div>
+    <div class="slogan gt-c-content-color-first">何以解忧？唯有学习！</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    sql 执行过程
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-04-11 ·
+                    </time>
+                    
+                        <a href="https://liquanhong.github.io/tag/8frmxTkbm/" class="post-tags">
+                            # mysql
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><img src="https://liquanhong.github.io//post-images/1649649275963.png" alt="" loading="lazy"><br>
+如上图所示，当向 MySQL 发送一个请求的时候，MySQL 到底做了什么：</p>
+<ol>
+<li>客户端发送一条查询给服务器。服务器先检查查询缓存，如果命中了缓存，则立刻返回存储在缓存中的结果。否则进入下一阶段；</li>
+<li>在解析一个查询语句之前，如果查询缓存是打开的，那么 MYSQL 会优先检查这个查询是否命中查询缓存中的数据；</li>
+<li>这个检查是通过一个对大小写敏感的哈希查找的。查询和缓存中的查询即使只有一个不同，也不会匹配缓存结果；</li>
+<li>如果命中缓存，那么在但会结果前 MySQL 会检查一次用户权限，有权限则跳过其他步骤直接返回数据；</li>
+<li>服务器端进行 SQL 解析、预处理，再由优化器生成对应的执行计划。MySQL 解析器将使用 MySQL 语法规则验证和解析查询。例如验证是否使用错误的关键字、关键字顺序、引号前后是否匹配等；预处理器则根据一些 MySQL 规则进一步解析树是否合法，例如检查数据表和数据列是否存在，解析名字和别名是否有歧义等；</li>
+<li>MySQL 根据优化器生成的执行计划，再调用存储引擎的 API 来执行查询。</li>
+</ol>
+<p>MySQL 的查询优化器使用很多策略来生成一个最优的执行计划。优化策略可以简单的分为两种：</p>
+<ol>
+<li>
+<p>静态优化：静态优化可以直接对解析树进行分析，并完成优化。例如优化器可以通过简单的代数变化将 WHERE 条件转换成另外一种等价形式，静态优化在第一次完成后就一直有效，即使使用不同的参数重复执行查询也不会变化。可以认为是一种”编译时优化“。</p>
+</li>
+<li>
+<p>动态优化：和查询的上下文有关，也可能和其他因素有关，例如 WHERE 中取值、索引中条目对应的数据行数等。这需要在每次查询的时候重新评估，可以让那位 u 是&quot;运行时优化&quot;。</p>
+</li>
+</ol>
+<p>使用 show status like ‘Last_query_cost’ 可以查询上次执行的语句的成本，单位为数据页。<br>
+<img src="https://liquanhong.github.io//post-images/1649649320469.png" alt="" loading="lazy"><br>
+<img src="https://liquanhong.github.io//post-images/1649649337634.png" alt="" loading="lazy"></p>
+<p>注意：<br>
+<strong>但是大多数情况下我会建议你不要使用查询缓存，为什么呢？因为查询缓存往往弊大于利。</strong><br>
+查询缓存的失效非常频繁，只要有对一个表的更新，这个表上所有的查询缓存都会被清空。因此很可能你费劲地把结果存起来，还没使用呢，就被一个更新全清空了。对于更新压力大的数据库来说，查询缓存的命中率会非常低。<br>
+需要注意的是，MySQL 8.0版本直接将查询缓存的整块功能删掉了，也就是说8.0开始彻底没有这个功能了。</p>
+<p>来源：<a href="https://mp.weixin.qq.com/s/sRFmW57KUY3yyyRkyw0L4A">https://mp.weixin.qq.com/s/sRFmW57KUY3yyyRkyw0L4A</a></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://liquanhong.github.io/post/yi-zhi-xing-du-shi-tu-zhu-yi-shi-xiang/" class="post-title gt-a-link">
+                    一致性读视图注意事项
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        好好学习，好好睡觉
+    </div>
+</div>
+
+<script>
+    hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
